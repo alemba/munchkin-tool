@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Munchkin Punktestand</title>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+	<style type="text/css">
+	body{
+		background-color: #173663;
+		color:#ddd;
+		font-family: 'Open Sans', sans-serif;
+		font-size: 24px;
+	}
+	header{
+		background-color: #101623; 
+	}
+	h1{
+		font-size: 24px;
+		font-family: 'Open Sans', sans-serif;
+		color: #13a0d3;
+	}
+	p{
+		font-family: 'Open Sans', sans-serif;
+	}
+	h1>small{
+		color: #999;
+	}
+	#stats{
+		margin:72px auto 0 auto;
+		font-size: 38px;
+		text-align: center;
+	}
+	input{
+		font-size: 24px;
+		padding: 3px;
+		color: #333;
+	}
+	table tr td{
+		padding: 3px 30px;
+		border: 1px solid #999;
+		font-weight: thin;
+	}
+	.name{
+		color: red;
+		font-weight: thin;
+	}
+	span{
+		font-size: 48px;
+	}
+	.glyphicon-arrow-down, .glyphicon-arrow-up{
+		color: #13a0d3;
+		font-size: 42px;
+	}
+	.sum_row{
+		color: #13a0d3;
+	}
+	.desc{
+		font-style: normal;
+		font-weight: 100;
+		letter-spacing: 1px;	
+		text-align: left;
+	}
+	.add{
+		font-size: 24px;
+		margin-top: 18px;
+		cursor: pointer;
+	}
+	.inner_box{
+		border: 1px solid #999;
+		text-align: left;
+		padding: 60px 24px;
+		width: 480px;
+		margin: 0 auto 0 auto;
+	}
+	.popup{
+	width:100%;
+	z-index:1000;
+	top:0px;
+	bottom:0px;
+	height:100%;
+	position:fixed;
+	display:none;
+	overflow:hidden;
+	background: #101623;
+	text-align:center;
+	}
+
+	.glyphicon-plus, .glyphicon-knight, .glyphicon-remove, .glyphicon-fire, .glyphicon-refresh{
+		font-size: 20px;
+	}
+	.glyphicon-knight, .glyphicon-fire{
+				margin: 0 32px;
+	}
+	.btn, .btn-danger, .btn-primary{
+		border-radius: 0;
+		border:0px;
+	}
+	footer{
+		text-align: center;
+		font-size: 12px;
+		background-color: #101623; 
+		color: #666;
+		min-height: 200px;
+		padding: 24px 0;
+		margin: 240px 0 0 0;
+	}
+	.glyphicon-heart{
+		font-size: 12px;
+	}
+	#close, #refresh{
+		cursor: pointer;
+	}
+	.corner{
+		/*height: 200px;*/
+	  margin: 0;
+	  background-color: transparent;
+	  background-size: 180px 180px;
+	  background-image:
+	     -webkit-repeating-linear-gradient(45deg, #ddd, transparent 1px, transparent 202px, transparent 14px);
+	  background-image:
+	     -moz-repeating-linear-gradient(45deg, #ddd, transparent 1px, transparent 202px, transparent 14px);
+	  background-image:
+	     -o-repeating-linear-gradient(45deg, #ddd, transparent 1px, transparent 202px, transparent 14px);
+	  background-image:
+	     repeating-linear-gradient(45deg, #ddd, transparent 1px, transparent 202px, transparent 14px);
+	}
+	.tiny{
+		font-size: 12px;
+	}
+	</style>
+</head>
+<body>
+<script src="jquery.js"></script>
+<header class="row">
+	<div class="row">
+		<div class="col-md-8 col-xs-9 col-md-offset-2 col-xs-offset-1">
+			<h1>Munchkin Tool <small>v.0.2</small></h1>
+		</div>
+		<div class="col-md-2 col-xs-2">
+			<span class="glyphicon glyphicon-plus add" id="add_player"></span>
+		</div>
+	</div>
+</header>
+<div class="row">
+<table id="stats">
+	<tr id="name_row">
+	<td class="corner"><span class="glyphicon glyphicon-fire" id="resize"></span><span class="glyphicon glyphicon-knight" id="resize"></span></td>
+	</tr>
+	<tr id="level_row">
+<td class="desc" id="level">Stufe</td>
+	</tr>
+	<tr id="strength_row">
+<td class="desc" id="strength">Kampfstärke</td>
+	</tr>
+	<tr id="sum_row">
+<td class="desc" id="sum"><b>Summe</b></td>
+	</tr>
+</table>
+</div>
+<footer class="row">Made with <span class="glyphicon glyphicon-heart"></span></footer>
+<div class="popup">
+	<div class="row">
+		<br/><br/><br/><h1>Spieler hinzufügen</h1><br/>
+		<div class="inner_box">
+				<label>Name: </label>
+				<input type="text" label="name" id="name_input" autofocus><span class="glyphicon glyphicon-add"><br/><br/>
+				<button class="btn-lg btn-primary" id="add_name" type="button">Hinzufügen</button>
+				<button class="btn-lg btn-danger" id="close" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+});
+//open window for adding player
+$( "#add_player" ).click(function() {
+  $('.popup').fadeIn();
+});
+//add this player now
+$( "#add_name" ).click(function() {
+	var name = $('#name_input').val();
+  $('#name_row').append('<td id="'+name+'">'+name+'</td>');
+  $('#level_row').append('<td id="'+name+'_level"><p id="'+name+'_level_up"><span class="glyphicon glyphicon-arrow-up"></span></p><p id="'+name+'_level_val">1</p><p id="'+name+'_level_down"><span class="glyphicon glyphicon-arrow-down"></span></p></td>');
+  $('#strength_row').append('<td id="'+name+'_strength"><p id="'+name+'_strength_up"><span class="glyphicon glyphicon-arrow-up"></span></p><p id="'+name+'_strength_val">0</p><p id="'+name+'_strength_down"><span class="glyphicon glyphicon-arrow-down"></span></p></td>');
+  $('#sum_row').append('<td id="'+name+'_sum">1</td>');
+  $('.popup').hide();
+});
+//--
+$(document).on('click', '#close', function(event) {
+  $('.popup').hide();
+});
+
+$(document).on('click', '#refresh', function(event) {
+   location.reload();
+});
+
+$(document).on('click', 'p[id$="_level_up"]', function(event) {
+	var name = $(this).attr('id');
+	console.log(name);
+	name = name.replace('_level_up','');
+	//LEVEL
+	var level_val = parseInt($('#'+name+'_level_val').html()) + 1;
+	if (level_val<10) {
+		$('#'+name+'_level_val').html(level_val);
+		//GET STRENGTH
+		var strength_val = parseInt($('#'+name+'_strength_val').html());
+		var sum_val = level_val + strength_val;
+		$('#'+name+'_sum').html(sum_val);
+	}
+	if (level_val == 10) {
+		$('#'+name+'_level_val').html(level_val);
+		$('.popup').html('<br/><br/><span class="glyphicon glyphicon-grain"></span><br/><h1>Sieger</h1><h2>– '+name+' –</h2><br/><br/><br/><br/><br/><br/><br/><span id="close" class="glyphicon glyphicon-remove"></span><br/><br/><span class="tiny" id="refresh">Neues Spiel</span><br/><span id="refresh" class="glyphicon glyphicon-refresh"></span>');
+		$('.popup').show("explode");
+	};
+});
+
+$(document).on('click', 'p[id$="_level_down"]', function(event) {
+	var name = $(this).attr('id');
+	console.log(name);
+	name = name.replace('_level_down','');
+	//LEVEL
+	var level_val = parseInt($('#'+name+'_level_val').html()) - 1;
+	if (level_val>0) {
+	$('#'+name+'_level_val').html(level_val);
+		//GET STRENGTH
+		var strength_val = parseInt($('#'+name+'_strength_val').html());
+		var sum_val = level_val + strength_val;
+		$('#'+name+'_sum').html(sum_val);
+	};
+});
+
+$(document).on('click', 'p[id$="_strength_up"]', function(event) {
+	var name = $(this).attr('id');
+	console.log(name);
+	name = name.replace('_strength_up','');
+	//Strength
+	var strength_val = parseInt($('#'+name+'_strength_val').html()) + 1;
+	if (strength_val>=0) {
+	$('#'+name+'_strength_val').html(strength_val);
+		//GET STRENGTH
+		var level_val = parseInt($('#'+name+'_level_val').html());
+		var sum_val = level_val + strength_val;
+		$('#'+name+'_sum').html(sum_val);
+	};
+});
+
+$(document).on('click', 'p[id$="_strength_down"]', function(event) {
+	var name = $(this).attr('id');
+	console.log(name);
+	name = name.replace('_strength_down','');
+	//Strength
+	var strength_val = parseInt($('#'+name+'_strength_val').html()) - 1;
+	if (strength_val>=0) {
+	$('#'+name+'_strength_val').html(strength_val);
+		//GET STRENGTH
+		var level_val = parseInt($('#'+name+'_level_val').html());
+		var sum_val = level_val + strength_val;
+		$('#'+name+'_sum').html(sum_val);
+	};
+});
+
+
+			
+// $( "#nightmode" ).click(function() {
+// 	//alert($('body').css('background-color'));
+// 	console.log($('body').css('background-color'));
+//   	if($('body').css('background-color') == 'rgb(51, 51, 51)'){
+// 		$('body').css({'background-color':'#999','color':'#333'});
+// 		$('header').css({'color':'#ddd'});
+// 		$('td').css({'border':'1px solid #333'});
+
+// 	}else{
+// 		$('body').css({'background-color':'#333','color':'#ddd'});
+// 		$('td').css({'border':'1px solid #ddd'});
+// 	}
+
+// });
+
+
+//Shortcuts added later
+var ctrlPressed = false;
+$(window).keydown(function(evt) {
+  if (evt.which == 17) { // ctrl
+    ctrlPressed = true;
+  }
+}).keyup(function(evt) {
+  if (evt.which == 17) { // ctrl
+    ctrlPressed = false;
+  }
+});
+
+</script>
+</body>
+</html>
